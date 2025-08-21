@@ -30,10 +30,20 @@
 		</c:forEach>
 	</table>
 	<hr>
-	<a href="boardlist?page=1">1페이지</a>
-	<a href="boardlist?page=2">2페이지</a>
-	<a href="boardlist?page=3">3페이지</a>
-	<a href="boardlist?page=4">4페이지</a>
+	<c:forEach begin="1" end="${totalPage }" var="i" >
+	<c:choose>
+	
+		<c:when test="${i == currentPage }">
+		<a href="boardlist?page=${i}"> <b style="color:red;"> ${i} 페이지 </b></a> |
+		</c:when>
+		<c:otherwise>
+		<a href="boardlist?page=${i}"> ${i} 페이지</a>
+		</c:otherwise>
+		
+	</c:choose>
+	
+	</c:forEach>
+	
 	
 	
 </body>
