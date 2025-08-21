@@ -18,10 +18,14 @@ public class BoardDao {
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
 	
+	private static final int PAGE_SIZE =10; //페이지당 출력 글의 갯수
 	
-	public List<BoardDto> boardList() { //게시판 모든 글 리스트를 가져와서 반환하는 메서드
+	public List<BoardDto> boardList(int page) { //게시판 모든 글 리스트를 가져와서 반환하는 메서드
+		//page를 눌러서 보여지는 글 목록 갯수 계산
+		int offset = (page - 1) * PAGE_SIZE;
+		//String sql = "SELECT * FROM board order by bnum desc";
+		String sql = "SELECT * FROM board order by bnum desc LIMIT ? OFFSET ?";
 		
-		String sql = "SELECT * FROM board ORDER BY bnum DESC";
 		
 		
 		//임시필드를 AS로 bno를 만듬 bnum을 오름차순으로 정리하면 내가 AS로 임시필드 bno를 만들어 줄께라는 의미
@@ -34,7 +38,8 @@ public class BoardDao {
 			//커넥션이 메모리 생성(DB와 연결 커넥션 conn 생성)
 			
 			pstmt = conn.prepareStatement(sql); //pstmt 객체 생성(sql 삽입)			
-			
+			pstmt.setInt(1, PAGE_SIZE);
+			pstmt.setInt(2, offset);
 			rs = pstmt.executeQuery(); //모든 글 리스트(모든 레코드) 반환
 			
 			while(rs.next()) {
